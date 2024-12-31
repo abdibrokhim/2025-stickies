@@ -13,7 +13,7 @@ interface StickyNoteProps {
   export default function StickyNote({ goal }: StickyNoteProps) {
     return (
       <div 
-        className="absolute w-48 h-48 p-4 rounded-lg shadow-[0_0_10px_rgba(255,255,255,0.25)] transform rotate-2 transition-transform hover:rotate-0 hover:scale-105"
+        className="absolute w-48 h-32 p-4 rounded-lg shadow-[0_0_10px_rgba(255,255,255,0.25)] transform rotate-2 transition-transform hover:rotate-0 hover:scale-105"
         style={{ left: goal.x, top: goal.y, backgroundColor: goal.color }}
       >
         <Pin className="absolute -top-4 -left-4 w-6 h-6 text-[var(--text-c)] z-10 transform -rotate-45" />
