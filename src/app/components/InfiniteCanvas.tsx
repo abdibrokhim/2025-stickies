@@ -37,25 +37,25 @@ export default function InfiniteCanvas({ onCanvasClick }: InfiniteCanvasProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [clickPosition, setClickPosition] = useState<{ x: number; y: number } | null>(null);
 
+  const loadGoals = async () => {
+    try {
+      const { data, error } = await supabase.from('goals').select('*')
+      if (error) throw error
+      console.log('All Data: ', data);
+      setGoals(data || [])
+    } catch (e) {
+      setError(e as Error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
-    const fetchGoals = async () => {
-      try {
-        const { data, error } = await supabase.from('goals').select('*')
-        if (error) throw error
-        console.log('All Data: ', data);
-        setGoals(data || [])
-      } catch (e) {
-        setError(e as Error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchGoals()
+    loadGoals()
   }, [])
 
   const addGoal = async (newGoal: Omit<Goal, 'id'>) => {
+    setIsLoading(true)
     try {
       const { data, error } = await supabase
         .from('goals')
@@ -63,9 +63,10 @@ export default function InfiniteCanvas({ onCanvasClick }: InfiniteCanvasProps) {
         .single()
     
       if (error) throw error
-      setGoals(prevGoals => [...prevGoals, data])
+      await loadGoals() // Refetch all goals after adding new one
     } catch (e) {
       console.error('Error adding goal:', e)
+      setIsLoading(false)
     }
   }
 
@@ -97,7 +98,7 @@ export default function InfiniteCanvas({ onCanvasClick }: InfiniteCanvasProps) {
     >
       <div className="relative w-[100%] h-[100%]">
         {goals?.map((goal) => (
-          <StickyNote key={goal.id} goal={goal}/>
+          <StickyNote key={goal?.id || Math.random()} goal={goal} />
         ))}
       </div>
     </div>
@@ -110,4 +111,3 @@ export default function InfiniteCanvas({ onCanvasClick }: InfiniteCanvasProps) {
     </>
   )
 }
-
