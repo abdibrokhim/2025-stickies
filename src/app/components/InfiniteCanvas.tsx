@@ -20,15 +20,6 @@ interface InfiniteCanvasProps {
   onCanvasClick: (x: number, y: number) => void
 }
   
-const fetchGoals = async (): Promise<Goal[]> => {
-  const { data, error } = await supabase
-    .from('goals')
-    .select('*')
-  
-  if (error) throw error
-  return data || []
-}
-
 export default function InfiniteCanvas({ onCanvasClick }: InfiniteCanvasProps) {
   const queryClient = useQueryClient()
   const [goals, setGoals] = useState<Goal[]>([])
