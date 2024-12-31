@@ -98,7 +98,7 @@ export default function InputModal({ isOpen, onClose, position, addGoal }: Input
         style={{ backgroundColor: selectedColor }}
       >
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Add Your 2025 Goal</DialogTitle>
+          <DialogTitle className="text-2xl font-bold">Add yours to Open Notes</DialogTitle>
         </DialogHeader>
         <ColorSelector 
           colors={popularColors}
@@ -110,27 +110,31 @@ export default function InputModal({ isOpen, onClose, position, addGoal }: Input
           <div className="grid gap-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="goal">
-                Goal
+                Quote
               </Label>
+              <p className='text-xs text-[var(--text-b)]'>It can be as simply as: &quot;just make things&quot; or &quot;i forgot to turn off the stove&quot; or &quot;i must at least try, why not?&quot;</p>
               <Textarea
                 id="goal"
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
+                onChange={(e) => setContent(e.target.value.slice(0, 50))}
                 className="w-full resize-none overflow-y-scroll no-scrollbar placeholder:text-[var(--text-c)] placeholder:text-xs placeholder:sm:text-sm"
-                placeholder="Enter your goal or motivational phrase"
+                placeholder="Enter your quote (max 50 chars)."
                 required
+                maxLength={50}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="name">
                 Name
               </Label>
+              <p className='text-xs text-[var(--text-b)]'>You can also enter your nickname or a pseudonym, you're well-known on the internet.</p>
               <Input
                 id="name"
                 value={author}
-                onChange={(e) => setAuthor(e.target.value)}
+                onChange={(e) => setAuthor(e.target.value.slice(0, 50))}
                 className="w-full placeholder:text-[var(--text-c)] placeholder:text-xs placeholder:sm:text-sm"
-                placeholder="Your name (or leave blank to stay anonymous)"
+                placeholder="Your name (max 50 chars, or leave blank to stay anonymous)."
+                maxLength={50}
               />
             </div>
           </div>
@@ -146,7 +150,7 @@ export default function InputModal({ isOpen, onClose, position, addGoal }: Input
                   Adding...
                 </>
               ) : (
-                'Add Goal'
+                'Add Now'
               )}
             </Button>
           </DialogFooter>
@@ -155,4 +159,3 @@ export default function InputModal({ isOpen, onClose, position, addGoal }: Input
     </Dialog>
   )
 }
-
