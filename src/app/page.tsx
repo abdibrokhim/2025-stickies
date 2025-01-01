@@ -11,10 +11,14 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 })
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [isHoveringNote, setIsHoveringNote] = useState(false)
+  const [isDraggingNote, setIsDraggingNote] = useState(false)
 
   const handleCanvasClick = (x: number, y: number) => {
-    setClickPosition({ x, y })
-    setIsModalOpen(true)
+    if (!isDraggingNote) {
+      setClickPosition({ x, y })
+      setIsModalOpen(true)
+    }
   }
 
   useEffect(() => {
@@ -40,28 +44,33 @@ export default function Home() {
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen scroll-smooth">
         <Header />
-        <InfiniteCanvas onCanvasClick={handleCanvasClick} />
+        <InfiniteCanvas 
+          onCanvasClick={handleCanvasClick}
+          onNoteHover={setIsHoveringNote}
+          onNoteDragging={setIsDraggingNote}
+        />
         <InputModal 
           isOpen={isModalOpen} 
           onClose={() => setIsModalOpen(false)}
           position={clickPosition}
           addGoal={async (newGoal) => {
-            // You might want to add error handling here
             await supabase.from('goals').insert([newGoal]).single()
           }}
         />
-        <div 
-          style={{
-            position: 'fixed',
-            left: mousePosition.x + 20,
-            top: mousePosition.y - 20,
-            pointerEvents: 'none',
-            zIndex: 50
-          }}
-          className="text-xs text-[var(--text-b)]"
-        >
-          click anywhere to add yours
-        </div>
+        {!isHoveringNote && !isDraggingNote && (
+          <div 
+            style={{
+              position: 'fixed',
+              left: mousePosition.x + 20,
+              top: mousePosition.y - 20,
+              pointerEvents: 'none',
+              zIndex: 50
+            }}
+            className="text-xs text-[var(--text-b)]"
+          >
+            click anywhere to add quote
+          </div>
+        )}
       </div>
     </QueryClientProvider>
   )

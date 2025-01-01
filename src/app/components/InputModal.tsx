@@ -94,11 +94,11 @@ export default function InputModal({ isOpen, onClose, position, addGoal }: Input
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !isSubmitting && onClose()}>
       <DialogContent 
-        className="sm:max-w-[700px] min-h-[600px]"
+        className="sm:max-w-[700px] min-h-[500px]"
         style={{ backgroundColor: selectedColor }}
       >
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Add yours to Open Notes</DialogTitle>
+          <DialogTitle className="text-2xl font-bold">Add Quote</DialogTitle>
         </DialogHeader>
         <ColorSelector 
           colors={popularColors}

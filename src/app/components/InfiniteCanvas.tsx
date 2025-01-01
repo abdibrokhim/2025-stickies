@@ -18,9 +18,11 @@ interface Goal {
 
 interface InfiniteCanvasProps {
   onCanvasClick: (x: number, y: number) => void
+  onNoteHover: (isHovering: boolean) => void
+  onNoteDragging: (isDragging: boolean) => void
 }
   
-export default function InfiniteCanvas({ onCanvasClick }: InfiniteCanvasProps) {
+export default function InfiniteCanvas({ onCanvasClick, onNoteHover, onNoteDragging }: InfiniteCanvasProps) {
   const queryClient = useQueryClient()
   const [goals, setGoals] = useState<Goal[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -89,7 +91,12 @@ export default function InfiniteCanvas({ onCanvasClick }: InfiniteCanvasProps) {
     >
       <div className="relative w-[100%] h-[100%]">
         {goals?.map((goal) => (
-          <StickyNote key={goal?.id || Math.random()} goal={goal} />
+          <StickyNote 
+            key={goal.id} 
+            goal={goal} 
+            onHover={onNoteHover}
+            onDragging={onNoteDragging}
+          />
         ))}
       </div>
     </div>
