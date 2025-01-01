@@ -38,7 +38,7 @@ export default function Home() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen">
+      <div className="min-h-screen scroll-smooth">
         <Header />
         <InfiniteCanvas onCanvasClick={handleCanvasClick} />
         <InputModal 
